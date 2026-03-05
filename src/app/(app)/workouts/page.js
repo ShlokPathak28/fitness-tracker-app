@@ -10,7 +10,7 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabase';
 import Modal from '@/components/Modal';
-import { generateRecentWorkouts, typeIcons, typeColors } from '@/lib/sampleData';
+import { typeIcons, typeColors } from '@/lib/sampleData';
 import styles from './workouts.module.css';
 
 const workoutTypes = ['strength', 'cardio', 'flexibility', 'sports', 'other'];
@@ -48,22 +48,10 @@ export default function WorkoutsPage() {
         .select('*, exercises(*)')
         .order('completed_at', { ascending: false });
 
-      if (data && data.length > 0) {
-        setWorkouts(data);
-      } else {
-        // Sample data
-        setWorkouts(generateRecentWorkouts().map((w, i) => ({
-          ...w,
-          exercises: [
-            { name: 'Bench Press', sets: 4, reps: 10, weight_kg: 60 },
-            { name: 'Rows', sets: 3, reps: 12, weight_kg: 50 },
-          ],
-          mood: moodOptions[i % moodOptions.length],
-          notes: 'Great session!',
-        })));
-      }
-    } catch {
-      setWorkouts(generateRecentWorkouts());
+      setWorkouts(data || []);
+    } catch (err) {
+      console.error('Error loading workouts:', err);
+      setWorkouts([]);
     } finally {
       setLoading(false);
     }

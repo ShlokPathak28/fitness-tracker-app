@@ -16,23 +16,26 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-          <motion.div
-            className={`${styles.modal} ${styles[size]}`}
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-            <div className={styles.header}>
-              <h3 className={styles.title}>{title}</h3>
-              <button className="btn-icon btn-ghost" onClick={onClose}>
-                <X size={20} />
-              </button>
-            </div>
-            <div className={styles.body}>
-              {children}
-            </div>
-          </motion.div>
+          <div className={styles.modalWrapper} onClick={onClose}>
+            <motion.div
+              className={`${styles.modal} ${styles[size]}`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.header}>
+                <h3 className={styles.title}>{title}</h3>
+                <button className="btn-icon btn-ghost" onClick={onClose}>
+                  <X size={20} />
+                </button>
+              </div>
+              <div className={styles.body}>
+                {children}
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

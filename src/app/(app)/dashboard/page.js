@@ -16,12 +16,6 @@ import CalorieBurnChart from '@/components/charts/CalorieBurnChart';
 import WorkoutTypeChart from '@/components/charts/WorkoutTypeChart';
 import GoalProgressChart from '@/components/charts/GoalProgressChart';
 import {
-  generateWeeklyActivity,
-  generateWeightTrend,
-  generateCalorieBurn,
-  generateWorkoutTypes,
-  generateGoals,
-  generateRecentWorkouts,
   typeIcons,
   typeColors,
 } from '@/lib/sampleData';
@@ -65,10 +59,10 @@ const statCards = [
 export default function DashboardPage() {
   const { profile } = useAuth();
   const [stats, setStats] = useState({
-    totalWorkouts: 47,
-    weeklyCalories: 3280,
-    activeGoals: 4,
-    streak: 7,
+    totalWorkouts: 0,
+    weeklyCalories: 0,
+    activeGoals: 0,
+    streak: 0,
   });
   const [weeklyData, setWeeklyData] = useState([]);
   const [weightData, setWeightData] = useState([]);
@@ -92,26 +86,19 @@ export default function DashboardPage() {
         .limit(50);
 
       if (workouts && workouts.length > 0) {
-        // Calculate real stats
         setRecentWorkouts(workouts.slice(0, 5));
-        // ... more real data processing
-      } else {
-        // Use sample data for demo
-        setWeeklyData(generateWeeklyActivity());
-        setWeightData(generateWeightTrend());
-        setCalorieData(generateCalorieBurn());
-        setTypeData(generateWorkoutTypes());
-        setGoals(generateGoals());
-        setRecentWorkouts(generateRecentWorkouts());
+        setStats(prev => ({ ...prev, totalWorkouts: workouts.length }));
+        const weekCals = workouts
+          .filter(w => {
+            const d = new Date(w.completed_at);
+            const now = new Date();
+            return (now - d) / (1000 * 60 * 60 * 24) <= 7;
+          })
+          .reduce((sum, w) => sum + (w.calories_burned || 0), 0);
+        setStats(prev => ({ ...prev, weeklyCalories: weekCals }));
       }
-    } catch {
-      // Fallback to sample data
-      setWeeklyData(generateWeeklyActivity());
-      setWeightData(generateWeightTrend());
-      setCalorieData(generateCalorieBurn());
-      setTypeData(generateWorkoutTypes());
-      setGoals(generateGoals());
-      setRecentWorkouts(generateRecentWorkouts());
+    } catch (err) {
+      console.error('Error loading dashboard data:', err);
     } finally {
       setLoading(false);
     }
