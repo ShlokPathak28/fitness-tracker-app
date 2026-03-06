@@ -78,7 +78,6 @@ export default function DashboardPage() {
 
   const loadData = async () => {
     try {
-      // Try to load from Supabase, fallback to sample data
       const { data: workouts } = await supabase
         .from('workouts')
         .select('*')
@@ -88,14 +87,68 @@ export default function DashboardPage() {
       if (workouts && workouts.length > 0) {
         setRecentWorkouts(workouts.slice(0, 5));
         setStats(prev => ({ ...prev, totalWorkouts: workouts.length }));
+
+        // Weekly calories
+        const now = new Date();
         const weekCals = workouts
-          .filter(w => {
-            const d = new Date(w.completed_at);
-            const now = new Date();
-            return (now - d) / (1000 * 60 * 60 * 24) <= 7;
-          })
+          .filter(w => (now - new Date(w.completed_at)) / (1000 * 60 * 60 * 24) <= 7)
           .reduce((sum, w) => sum + (w.calories_burned || 0), 0);
         setStats(prev => ({ ...prev, weeklyCalories: weekCals }));
+
+        // Weekly activity chart — last 7 days { day, workouts }
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const weekly = {};
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          const key = dayNames[d.getDay()];
+          weekly[key] = { day: key, workouts: 0 };
+        }
+        workouts.forEach(w => {
+          const d = new Date(w.completed_at);
+          if ((now - d) / (1000 * 60 * 60 * 24) <= 7) {
+            const key = dayNames[d.getDay()];
+            if (weekly[key]) weekly[key].workouts++;
+          }
+        });
+        setWeeklyData(Object.values(weekly));
+
+        // Calorie burn chart — last 14 days { date, calories }
+        const calMap = {};
+        for (let i = 13; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          calMap[label] = { date: label, calories: 0 };
+        }
+        workouts.forEach(w => {
+          const d = new Date(w.completed_at);
+          if ((now - d) / (1000 * 60 * 60 * 24) <= 14) {
+            const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            if (calMap[label]) calMap[label].calories += (w.calories_burned || 0);
+          }
+        });
+        setCalorieData(Object.values(calMap));
+
+        // Workout type chart { name, value }
+        const typeCounts = {};
+        workouts.forEach(w => {
+          const t = w.type || 'other';
+          const name = t.charAt(0).toUpperCase() + t.slice(1);
+          typeCounts[name] = (typeCounts[name] || 0) + 1;
+        });
+        setTypeData(Object.entries(typeCounts).map(([name, value]) => ({ name, value })));
+      }
+
+      // Load goals
+      const { data: goalsData } = await supabase
+        .from('goals')
+        .select('*')
+        .eq('completed', false)
+        .limit(5);
+      if (goalsData && goalsData.length > 0) {
+        setGoals(goalsData);
+        setStats(prev => ({ ...prev, activeGoals: goalsData.length }));
       }
     } catch (err) {
       console.error('Error loading dashboard data:', err);

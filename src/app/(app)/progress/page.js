@@ -68,7 +68,7 @@ export default function ProgressPage() {
       if (workouts && workouts.length > 0) {
         // Build calorie data from real workouts
         setCalorieData(workouts.map(w => ({
-          day: new Date(w.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          date: new Date(w.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           calories: w.calories_burned || 0,
         })));
 
