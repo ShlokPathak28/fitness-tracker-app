@@ -93,40 +93,114 @@
   pointer-events: none;
 }
 
+/* ===== SCENE & LAYOUT ===== */
+.sceneContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Make sure hero content is above the scene */
 .heroContent {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 720px;
+  max-width: 800px;
+  width: 100%;
 }
 
-.heroBadge {
-  display: inline-flex;
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  padding: 6px 16px;
-  background: var(--accent-light);
-  border-radius: var(--radius-full);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: var(--space-8);
+  justify-content: center;
+  padding: 160px var(--space-6) 100px;
+  overflow: hidden;
+  gap: 6rem;
 }
 
+.cardsContainer {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Premium Button Effects */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 20px -10px var(--accent-glow);
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.glass-effect:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== ANIMATED TEXT ===== */
+.gradient-animated {
+  background-size: 200% auto;
+  animation: gradientPan 4s linear infinite;
+}
+
+@keyframes gradientPan {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Update hero Title size to fit layout */
 .heroTitle {
-  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-size: clamp(3rem, 8vw, 5.5rem);
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-3);
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .heroSubtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
   color: var(--text-secondary);
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-8);
   line-height: 1.7;
 }
 
@@ -134,82 +208,85 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-4);
+  gap: var(--space-6);
   flex-wrap: wrap;
+  margin-top: var(--space-4);
 }
 
-/* Floating Cards */
+/* Hide floating cards from old CSS, we have 3d cards now */
 .floatingCard {
-  position: absolute;
-  z-index: 1;
+  display: none;
 }
 
 .miniStatCard {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  background: var(--bg-glass-strong);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
-.miniStatValue {
-  display: block;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.miniStatLabel {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--text-tertiary);
-  font-weight: 500;
+  display: none;
 }
 
 /* ===== STATS BAR ===== */
-.statsBar {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-12);
-  padding: var(--space-12) var(--space-6);
-  flex-wrap: wrap;
+.statsSection {
+  position: relative;
+  z-index: 2;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  background: var(--bg-secondary);
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(20px);
+  padding: var(--space-12) 0;
+}
+
+.statsInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  padding: 0 var(--space-6);
 }
 
 .statItem {
   text-align: center;
+  min-width: 150px;
 }
 
 .statValue {
   display: block;
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 900;
   letter-spacing: -0.03em;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin-bottom: 4px;
 }
 
 .statLabel {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* ===== FEATURES ===== */
+/* Features */
 .features {
+  position: relative;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-16) var(--space-6);
+  padding: var(--space-20) var(--space-6);
+}
+
+.featureCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  transition: all var(--transition-base);
+}
+.featureCard:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
 }
 
 .sectionHeader {
