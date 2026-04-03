@@ -3,12 +3,13 @@
 import Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 
 export default function AppLayout({ children }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -29,8 +30,11 @@ export default function AppLayout({ children }) {
 
   return (
     <div className={styles.appLayout}>
-      <Sidebar />
-      <main className={styles.mainContent}>
+      <Sidebar
+        collapsed={collapsed}
+        onToggleCollapse={() => setCollapsed((prev) => !prev)}
+      />
+      <main className={`${styles.mainContent} ${collapsed ? styles.mainContentCollapsed : ''}`}>
         {children}
       </main>
     </div>

@@ -16,7 +16,6 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import ThemeToggle from './ThemeToggle';
 import styles from './Sidebar.module.css';
-import { useState } from 'react';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -26,10 +25,16 @@ const navItems = [
   { href: '/profile', icon: User, label: 'Profile' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ collapsed, onToggleCollapse }) {
   const pathname = usePathname();
   const { user, profile, signOut } = useAuth();
-  const [collapsed, setCollapsed] = useState(false);
+  const handleLogoKeyDown = (event) => {
+    if (!collapsed) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onToggleCollapse();
+    }
+  };
 
   return (
     <>
@@ -38,10 +43,19 @@ export default function Sidebar() {
         className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}
         animate={{ width: collapsed ? 72 : 260 }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        data-collapsed={collapsed}
       >
         <div className={styles.sidebarInner}>
           {/* Logo */}
-          <div className={styles.logo}>
+          <div
+            className={`${styles.logo} ${collapsed ? styles.logoCollapsedTrigger : ''}`}
+            onClick={collapsed ? onToggleCollapse : undefined}
+            onKeyDown={handleLogoKeyDown}
+            role={collapsed ? 'button' : undefined}
+            tabIndex={collapsed ? 0 : undefined}
+            aria-label={collapsed ? 'Expand sidebar' : undefined}
+            title={collapsed ? 'Expand sidebar' : undefined}
+          >
             <div className={styles.logoIcon}>
               <Activity size={24} strokeWidth={2.5} />
             </div>
@@ -58,17 +72,20 @@ export default function Sidebar() {
                 </motion.span>
               )}
             </AnimatePresence>
-            <button
-              className={styles.collapseBtn}
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              <motion.div
-                animate={{ rotate: collapsed ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+            {!collapsed && (
+              <button
+                className={styles.collapseBtn}
+                onClick={onToggleCollapse}
+                aria-label="Collapse sidebar"
               >
-                <ChevronLeft size={16} />
-              </motion.div>
-            </button>
+                <motion.div
+                  animate={{ rotate: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ChevronLeft size={16} />
+                </motion.div>
+              </button>
+            )}
           </div>
 
           {/* Navigation */}
@@ -82,12 +99,8 @@ export default function Sidebar() {
                   className={`${styles.navItem} ${isActive ? styles.active : ''}`}
                   title={collapsed ? item.label : undefined}
                 >
-                  {isActive && (
-                    <motion.div
-                      className={styles.activeIndicator}
-                      layoutId="activeIndicator"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
+                  {isActive && !collapsed && (
+                    <div className={styles.activeIndicator} />
                   )}
                   <item.icon size={20} className={styles.navIcon} />
                   <AnimatePresence>
@@ -111,7 +124,7 @@ export default function Sidebar() {
           <div className={styles.sidebarBottom}>
             <ThemeToggle />
             <button
-              className={styles.navItem}
+              className={`${styles.navItem} ${styles.actionItem}`}
               onClick={signOut}
               title={collapsed ? 'Sign Out' : undefined}
             >
@@ -130,9 +143,23 @@ export default function Sidebar() {
             </button>
 
             {/* User info */}
-            <AnimatePresence>
-              {!collapsed && (
+            <AnimatePresence mode="wait">
+              {collapsed ? (
                 <motion.div
+                  key="compact-user"
+                  className={styles.userInfoCompact}
+                  title={profile?.full_name || user?.email || 'User'}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                >
+                  <div className={styles.userAvatar}>
+                    {(profile?.full_name || user?.email || 'U')[0].toUpperCase()}
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="full-user"
                   className={styles.userInfo}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
