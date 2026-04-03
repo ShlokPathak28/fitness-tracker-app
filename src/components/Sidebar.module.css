@@ -21,6 +21,11 @@
   gap: var(--space-4);
 }
 
+.collapsed .sidebarInner {
+  padding-inline: 10px;
+  align-items: center;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -28,6 +33,17 @@
   padding: var(--space-2) var(--space-2);
   position: relative;
   min-height: 44px;
+}
+
+.collapsed .logo {
+  width: 100%;
+  justify-content: center;
+  padding-inline: 0;
+  min-height: 44px;
+}
+
+.logoCollapsedTrigger {
+  cursor: pointer;
 }
 
 .logoIcon {
@@ -58,6 +74,8 @@
 .collapseBtn {
   position: absolute;
   right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 28px;
   height: 28px;
   border-radius: var(--radius-full);
@@ -85,6 +103,11 @@
   margin-top: var(--space-4);
 }
 
+.collapsed .nav {
+  width: 100%;
+  align-items: center;
+}
+
 .navItem {
   display: flex;
   align-items: center;
@@ -103,6 +126,19 @@
   background: none;
   width: 100%;
   text-align: left;
+}
+
+.collapsed .navItem {
+  width: 48px;
+  height: 48px;
+  justify-content: center;
+  padding: 0;
+  border-radius: 18px;
+}
+
+.collapsed .active {
+  background: color-mix(in srgb, var(--accent-light) 72%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 .navItem:hover {
@@ -139,6 +175,27 @@
   border-top: 1px solid var(--border);
 }
 
+.collapsed .sidebarBottom {
+  width: 100%;
+  align-items: center;
+}
+
+.collapsed .sidebarBottom::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--border);
+  margin-bottom: var(--space-1);
+}
+
+.collapsed .sidebarBottom {
+  border-top: none;
+}
+
+.actionItem {
+  justify-content: flex-start;
+}
+
 .userInfo {
   display: flex;
   align-items: center;
@@ -147,6 +204,16 @@
   border-radius: var(--radius-md);
   background: var(--bg-input);
   overflow: hidden;
+}
+
+.userInfoCompact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--accent-light), transparent);
 }
 
 .userAvatar {
@@ -242,7 +309,54 @@
   .sidebar {
     width: 72px !important;
   }
+
+  .sidebarInner {
+    padding-inline: 10px;
+    align-items: center;
+  }
+
+  .logo {
+    width: 100%;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
   .collapseBtn {
+    display: none;
+  }
+
+  .nav {
+    width: 100%;
+    align-items: center;
+  }
+
+  .navItem {
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    padding: 0;
+    border-radius: 18px;
+  }
+
+  .activeIndicator {
+    display: none;
+  }
+
+  .sidebarBottom {
+    width: 100%;
+    align-items: center;
+    border-top: none;
+  }
+
+  .sidebarBottom::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: var(--space-1);
+  }
+
+  .userInfo {
     display: none;
   }
 }

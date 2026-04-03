@@ -12,6 +12,10 @@
   transition: margin-left var(--transition-base);
 }
 
+.mainContentCollapsed {
+  margin-left: 72px;
+}
+
 .loadingScreen {
   min-height: 100vh;
   display: flex;
