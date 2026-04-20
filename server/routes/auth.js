@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { SUPABASE_URL, SUPABASE_ANON_KEY } = require('../lib/supabase');
 
+function getSupabaseErrorPayload(data, fallbackMessage) {
+    return {
+        error: data?.msg || data?.error_description || data?.error || fallbackMessage,
+        ...(data?.error_code ? { code: data.error_code } : {}),
+        ...(data?.error_id ? { error_id: data.error_id } : {})
+    };
+}
+
 router.post('/signup', async (req, res) => {
     const { email, password, fullName } = req.body;
 
@@ -20,7 +28,10 @@ router.post('/signup', async (req, res) => {
         if (response.ok) {
             res.json({ success: true, data });
         } else {
-            res.status(400).json({ error: data.msg || data.error_description || data.error || 'Signup failed' });
+            if (response.status >= 500) {
+                console.error('Supabase signup failed', data);
+            }
+            res.status(response.status).json(getSupabaseErrorPayload(data, 'Signup failed'));
         }
     } catch (error) {
         res.status(500).json({ error: 'Server error' });

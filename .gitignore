@@ -3,6 +3,8 @@ node_modules/
 .env
 .env.*
 !.env.example
+playwright-add-goal.js
+docs/superpowers
 
 .cursor/
 .playwright-mcp/
@@ -19,4 +21,3 @@ pnpm-debug.log*
 
 .DS_Store
 Thumbs.db
-
