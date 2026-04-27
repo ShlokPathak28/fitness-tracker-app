@@ -72,10 +72,10 @@ async function fetchWorkoutStats() {
 }
 
 function renderWorkoutCard(workout) {
-    const typeColors = {
-        'Strength': 'bg-primary/10',
-        'Cardio': 'bg-secondary/10',
-        'Yoga': 'bg-tertiary/10'
+    const typeClasses = {
+        'Strength': 'strength',
+        'Cardio': 'cardio',
+        'Yoga': 'yoga'
     };
     
     const typeIcons = {
@@ -84,29 +84,29 @@ function renderWorkoutCard(workout) {
         'Yoga': 'self_improvement'
     };
     
-    const colorClass = typeColors[workout.type] || 'bg-surface-variant';
+    const typeClass = typeClasses[workout.type] || 'default';
     const iconName = typeIcons[workout.type] || 'fitness_center';
     
     return `
-        <div class="col-span-12 lg:col-span-4 bg-surface-container rounded-xl p-6 hover:bg-surface-container-high transition-all">
-            <div class="flex justify-between items-start mb-6">
-                <div class="w-12 h-12 rounded-full ${colorClass} flex items-center justify-center">
+        <div class="workout-card">
+            <div class="workout-card-header">
+                <div class="workout-icon-wrap ${typeClass}">
                     <span class="material-symbols-outlined">${iconName}</span>
                 </div>
-                <span class="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant">
+                <span class="workout-card-date">
                     ${new Date(workout.created_at).toLocaleDateString()}
                 </span>
             </div>
-            <h4 class="text-xl font-bold mb-1">${workout.name || 'Workout'}</h4>
-            <p class="text-on-surface-variant text-sm mb-6">${workout.type || 'Training'}</p>
-            <div class="flex gap-4">
-                <div class="bg-surface-container-low px-4 py-2 rounded-lg">
-                    <p class="text-[0.6rem] uppercase tracking-widest text-on-surface-variant mb-1">Duration</p>
-                    <p class="font-bold">${workout.duration || 0} min</p>
+            <h4 class="workout-card-title">${workout.name || 'Workout'}</h4>
+            <p class="workout-card-type">${workout.type || 'Training'}</p>
+            <div class="workout-card-stats">
+                <div class="workout-card-stat">
+                    <p class="workout-stat-label">Duration</p>
+                    <p class="workout-stat-value">${workout.duration || 0} min</p>
                 </div>
-                <div class="bg-surface-container-low px-4 py-2 rounded-lg">
-                    <p class="text-[0.6rem] uppercase tracking-widest text-on-surface-variant mb-1">Calories</p>
-                    <p class="font-bold text-primary">${workout.calories || 0}</p>
+                <div class="workout-card-stat">
+                    <p class="workout-stat-label">Calories</p>
+                    <p class="workout-stat-value" style="color: var(--primary);">${workout.calories || 0}</p>
                 </div>
             </div>
         </div>

@@ -1,0 +1,407 @@
+/* ===== Dashboard Page ===== */
+
+/* Main canvas */
+.dash-main {
+    margin-left: 18rem;
+    padding: 3rem;
+    max-width: 1600px;
+}
+
+/* Header */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+}
+
+.dash-header-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: white;
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+}
+
+.dash-username {
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(to right, var(--primary), var(--secondary));
+}
+
+.dash-header-subtitle {
+    color: var(--on-surface-variant);
+    font-size: 1.125rem;
+    margin: 0;
+}
+
+/* BMI card — glassmorphism */
+.dash-bmi-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    min-width: 150px;
+}
+
+.dash-bmi-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--on-surface-variant);
+    margin: 0 0 0.5rem;
+}
+
+.dash-bmi-value-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.dash-bmi-value {
+    font-size: 1.875rem;
+    font-weight: 900;
+    color: var(--tertiary);
+}
+
+.dash-bmi-sublabel {
+    font-size: 0.875rem;
+    color: var(--tertiary);
+    margin-bottom: 0.25rem;
+}
+
+/* Stat Cards Grid */
+.dash-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+/* Glass stat card */
+.dash-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-stat-card:hover .dash-stat-bg-icon {
+    transform: scale(1.1);
+}
+
+.dash-stat-content {
+    position: relative;
+    z-index: 10;
+}
+
+.dash-stat-icon {
+    font-size: 1.875rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.dash-stat-icon.primary { color: var(--primary); }
+.dash-stat-icon.secondary { color: var(--secondary); }
+.dash-stat-icon.tertiary { color: var(--tertiary); }
+
+.dash-stat-label {
+    color: var(--on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.dash-stat-value {
+    font-size: 2.25rem;
+    font-weight: 900;
+    margin: 0.5rem 0 0;
+}
+
+.dash-stat-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--tertiary);
+    font-size: 0.875rem;
+    position: relative;
+    z-index: 10;
+    margin-top: 1rem;
+}
+
+.dash-stat-bg-icon {
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+    opacity: 0.05;
+    font-size: 7.5rem;
+    transition: transform 0.5s;
+    line-height: 1;
+}
+
+/* Goals progress bar inside stat card */
+.dash-goals-bar-wrap {
+    width: 100%;
+    background-color: var(--surface-variant);
+    height: 0.375rem;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.dash-goals-bar-fill {
+    background-color: var(--tertiary);
+    height: 100%;
+    width: 100%;
+}
+
+/* Streak card (gradient) */
+.dash-streak-card {
+    background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+    padding: 2rem;
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-streak-card:hover .dash-streak-bg-icon { transform: scale(1.1); }
+
+.dash-streak-content {
+    position: relative;
+    z-index: 10;
+    color: var(--on-primary-fixed);
+}
+
+.dash-streak-content .material-symbols-outlined {
+    font-size: 1.875rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.dash-streak-label {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.dash-streak-value {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: var(--on-primary-fixed);
+    margin: 0.5rem 0 0;
+}
+
+.dash-streak-badge {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--on-primary-fixed);
+    align-self: flex-start;
+    position: relative;
+    z-index: 10;
+}
+
+.dash-streak-bg-icon {
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+    opacity: 0.1;
+    font-size: 7.5rem;
+    color: var(--on-primary-fixed);
+    transition: transform 0.5s;
+    line-height: 1;
+}
+
+/* Chart Section */
+.dash-charts-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.dash-chart-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 48px rgba(196, 127, 255, 0.08);
+}
+
+.dash-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.dash-chart-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0 0 0.25rem;
+}
+
+.dash-chart-subtitle {
+    color: var(--on-surface-variant);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.dash-chart-filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Filter buttons — JS updates className directly, so we style both states */
+.dash-filter-btn-active {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    border: none;
+    cursor: pointer;
+}
+
+.dash-filter-btn-inactive {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: transparent;
+    color: var(--on-surface-variant);
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.dash-filter-btn-inactive:hover { color: white; }
+
+.dash-activity-chart {
+    height: 16rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 0.5rem;
+}
+
+/* Chart bar column — injected by JS */
+.chart-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 0.5rem;
+}
+
+.chart-track {
+    width: 1.75rem;
+    height: 10rem;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-bottom: 1px solid rgba(72, 72, 71, 0.25);
+}
+
+.chart-bar-bg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(38, 38, 38, 0.35);
+    border-radius: 0.375rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-bar-bg.is-peak {
+    box-shadow: 0 0 10px rgba(255, 126, 234, 0.25);
+}
+
+.chart-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(255, 126, 234, 0.4), rgba(255, 126, 234, 0.75));
+    border-radius: 0.125rem;
+    transition: height 0.7s ease;
+}
+
+.chart-bar-fill.is-peak {
+    background: linear-gradient(to top, rgba(255, 126, 234, 0.75), rgba(255, 126, 234, 0.95));
+}
+
+.chart-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--on-surface-variant);
+}
+
+.chart-label.is-peak {
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .dash-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .dash-header-title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dash-main {
+        margin-left: 0;
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dash-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .dash-header-title {
+        font-size: 2rem;
+        line-height: 1.15;
+    }
+
+    .dash-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

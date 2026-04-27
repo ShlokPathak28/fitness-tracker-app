@@ -186,25 +186,25 @@ function renderActivityChart(workouts, period = 'week') {
     const max = Math.max(...series.values, 1);
     chartEl.innerHTML = series.values.map((value, idx) => {
         const heightPct = value > 0 ? Math.max(8, Math.round((value / max) * 100)) : 0;
-        const isPeak = value === max;
+        const isPeak = value === max && value > 0;
         return `
-            <div class="flex flex-col items-center flex-1 gap-2">
-                <div class="w-full h-40 relative flex items-end justify-center border-b border-outline-variant/25">
-                    <div class="w-7 bg-surface-variant/35 rounded-md relative overflow-hidden ${isPeak ? 'shadow-[0_0_10px_rgba(255,126,234,0.25)]' : ''}" style="height:100%">
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${isPeak ? 'from-primary/75 to-primary/95' : 'from-primary/40 to-primary/75'} rounded-sm transition-all duration-700" style="height:${heightPct}%"></div>
+            <div class="chart-col">
+                <div class="chart-track">
+                    <div class="chart-bar-bg${isPeak ? ' is-peak' : ''}">
+                        <div class="chart-bar-fill${isPeak ? ' is-peak' : ''}" style="height:${heightPct}%"></div>
                     </div>
                 </div>
-                <span class="text-[10px] font-bold ${isPeak ? 'text-primary' : 'text-on-surface-variant'}">${series.labels[idx]}</span>
+                <span class="chart-label${isPeak ? ' is-peak' : ''}">${series.labels[idx]}</span>
             </div>
         `;
     }).join('');
 
     if (period === 'month') {
-        monthBtn.className = 'px-4 py-2 bg-surface-variant rounded-full text-xs font-bold';
-        weekBtn.className = 'px-4 py-2 text-on-surface-variant hover:text-white rounded-full text-xs font-bold';
+        monthBtn.className = 'dash-filter-btn-active';
+        weekBtn.className = 'dash-filter-btn-inactive';
     } else {
-        weekBtn.className = 'px-4 py-2 bg-surface-variant rounded-full text-xs font-bold';
-        monthBtn.className = 'px-4 py-2 text-on-surface-variant hover:text-white rounded-full text-xs font-bold';
+        weekBtn.className = 'dash-filter-btn-active';
+        monthBtn.className = 'dash-filter-btn-inactive';
     }
 }
 

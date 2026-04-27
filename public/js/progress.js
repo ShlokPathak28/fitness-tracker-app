@@ -90,17 +90,17 @@ function renderActivityChart(workouts) {
     if (midLabelEl) midLabelEl.textContent = formatDurationLabel(midMinutes);
 
     chartEl.innerHTML = series.map((entry) => `
-        <div class="flex-1 min-w-0 h-full flex flex-col justify-end gap-3 group">
-            <div class="relative flex-1 flex items-end">
-                <div class="w-full rounded-[1.5rem] bg-white/[0.04] border border-white/5 px-2 pt-4 pb-2 h-full flex items-end">
-                    <div class="w-full rounded-[1.2rem] transition-all duration-700 ${entry.isPeak ? 'bg-gradient-to-t from-primary via-secondary to-tertiary shadow-[0_0_24px_rgba(255,126,234,0.28)]' : 'bg-gradient-to-t from-primary/30 via-primary/55 to-secondary/70'}" style="height:${entry.heightPct}%"></div>
+        <div class="chart-bar-col">
+            <div class="chart-bar-container">
+                <div class="chart-bar-track">
+                    <div class="chart-bar-fill${entry.isPeak ? ' peak' : ''}" style="height:${entry.heightPct}%"></div>
                 </div>
-                <div class="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div class="chart-tooltip">
                     ${entry.durationLabel}
                 </div>
             </div>
-            <div class="text-center">
-                <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant">${entry.label}</p>
+            <div class="chart-bar-label">
+                ${entry.label}
             </div>
         </div>
     `).join('');
@@ -112,9 +112,9 @@ function renderRecentWorkouts(workouts) {
 
     if (workouts.length === 0) {
         recentEl.innerHTML = `
-            <div class="py-8 text-center">
-                <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-3 block">history</span>
-                <p class="text-on-surface-variant">No workouts logged yet.</p>
+            <div class="progress-empty-state">
+                <span class="material-symbols-outlined progress-empty-icon">history</span>
+                <p class="progress-empty-text">No workouts logged yet.</p>
             </div>
         `;
         return;
@@ -125,12 +125,12 @@ function renderRecentWorkouts(workouts) {
         .slice(0, 5);
 
     recentEl.innerHTML = recent.map((workout) => `
-        <div class="py-4 border-b border-outline-variant/15 last:border-0 flex items-center justify-between gap-4">
+        <div class="workout-item">
             <div>
-                <p class="font-bold text-white">${workout.name || 'Workout'}</p>
-                <p class="text-xs text-on-surface-variant">${workout.type || 'General'} · ${new Date(workout.created_at).toLocaleDateString()}</p>
+                <p class="workout-name">${workout.name || 'Workout'}</p>
+                <p class="workout-meta">${workout.type || 'General'} · ${new Date(workout.created_at).toLocaleDateString()}</p>
             </div>
-            <p class="text-sm text-on-surface-variant">${formatDurationLabel(workout.duration || 0)}</p>
+            <p class="workout-duration">${formatDurationLabel(workout.duration || 0)}</p>
         </div>
     `).join('');
 }

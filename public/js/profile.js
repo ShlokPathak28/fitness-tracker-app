@@ -226,14 +226,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (imperialFields) imperialFields.classList.toggle('hidden', unitMode !== 'imperial');
 
         if (unitMetricBtn) {
-            unitMetricBtn.className = unitMode === 'metric'
-                ? 'px-4 py-2 rounded-full bg-primary text-on-primary-fixed font-bold text-xs uppercase tracking-widest'
-                : 'px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-xs uppercase tracking-widest';
+            unitMetricBtn.className = unitMode === 'metric' ? 'unit-btn active' : 'unit-btn';
         }
         if (unitImperialBtn) {
-            unitImperialBtn.className = unitMode === 'imperial'
-                ? 'px-4 py-2 rounded-full bg-primary text-on-primary-fixed font-bold text-xs uppercase tracking-widest'
-                : 'px-4 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-xs uppercase tracking-widest';
+            unitImperialBtn.className = unitMode === 'imperial' ? 'unit-btn active' : 'unit-btn';
         }
 
         updateBmiPreview();

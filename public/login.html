@@ -109,6 +109,7 @@
             .fixed.bottom-12.right-12 { position: static !important; margin-top: 1rem; }
         }
     </style>
+<script type="module" src="/js/firebase-init.js"></script>
 </head>
 <body class="bg-background text-on-surface min-h-screen flex items-center justify-center p-6 kinetic-bg selection:bg-primary selection:text-on-primary">
 <!-- Cinematic Background Image Overlay -->
@@ -145,7 +146,7 @@
 <div class="flex flex-col gap-2">
 <div class="flex justify-between items-end px-4">
 <label class="text-[0.75rem] font-bold uppercase tracking-[0.05em] text-[#adaaaa]">Password</label>
-<a class="text-[0.7rem] font-bold text-secondary hover:text-primary transition-colors" href="#" onclick="alert('Please check your email for the password reset link from Supabase, or contact support.'); return false;">Forgot Password?</a>
+<a class="text-[0.7rem] font-bold text-secondary hover:text-primary transition-colors" href="#" onclick="alert('Please check your email for the password reset link, or contact support.'); return false;">Forgot Password?</a>
 </div>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-tertiary transition-colors">lock</span>
@@ -196,3 +197,4 @@
 </div>
 <script src="/js/auth.js"></script>
 </body></html>
+
