@@ -181,13 +181,17 @@ function renderGoalCard(goal) {
         </button>
     `).join('');
 
+    const statusBadge = getStatusBadge(goal);
+    const statusClass = goal.status === STATUS_COMPLETED ? 'completed' : goal.status === STATUS_FAILED ? 'failed' : '';
+
     return `
-        <div class="goal-card ${goal.status === STATUS_COMPLETED ? 'completed' : ''}" style="border-left-color: var(--${colorClass});" data-goal-card="${goal.id}">
+        <div class="goal-card ${statusClass}" style="border-left-color: var(--${colorClass});" data-goal-card="${goal.id}">
             <div class="goal-card-header">
                 <div>
                     <span class="goal-card-tag" style="color: var(--${colorClass});">${escapeHtml(goalType)}</span>
                     <h4 class="goal-card-title">${escapeHtml(goal.title)}</h4>
                 </div>
+                ${statusBadge}
             </div>
             <div class="goal-card-footer">
                 <span>Started ${new Date(goal.created_at).toLocaleDateString()}</span>

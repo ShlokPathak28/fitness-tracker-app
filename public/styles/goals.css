@@ -124,6 +124,16 @@
     transform: translateY(-2px);
 }
 
+.goal-card.completed {
+    border-left-color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.04);
+}
+
+.goal-card.failed {
+    border-left-color: #f59e0b !important;
+    background-color: rgba(245, 158, 11, 0.04);
+}
+
 .goal-card-header {
     display: flex;
     justify-content: space-between;
